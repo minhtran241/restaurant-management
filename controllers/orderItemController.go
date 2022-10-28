@@ -35,6 +35,6 @@ func CreateOrderItem() gin.HandlerFunc {
 
 func UpdateOrderItem() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		
+
 	}
 }

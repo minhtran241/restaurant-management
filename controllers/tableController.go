@@ -22,6 +22,6 @@ func CreateTable() gin.HandlerFunc {
 
 func UpdateTable() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		
+
 	}
 }
