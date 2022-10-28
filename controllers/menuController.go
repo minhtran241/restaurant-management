@@ -23,25 +23,15 @@ func GetMenus() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 		defer cancel()
-		cur, err := menuCollection.Find(ctx, bson.D{})
+		result, err := menuCollection.Find(ctx, bson.M{})
 		if err != nil {
 			c.JSON(
 				http.StatusInternalServerError,
-				gin.H{"error": "error occurred while listing the menu items"},
+				gin.H{"error": "error occurred while listing menu items"},
 			)
 		}
-		defer cur.Close(ctx)
-
-		var allMenus []models.Menu
-		for cur.Next(ctx) {
-			var result models.Menu
-			err := cur.Decode(&result)
-			if err != nil {
-				log.Fatal(err)
-			}
-			allMenus = append(allMenus, result)
-		}
-		if err := cur.Err(); err != nil {
+		var allMenus []bson.M
+		if err = result.All(ctx, &allMenus); err != nil {
 			log.Fatal(err)
 		}
 		c.JSON(http.StatusOK, allMenus)
@@ -56,7 +46,6 @@ func GetMenu() gin.HandlerFunc {
 		var menu models.Menu
 		err := foodCollection.FindOne(ctx, bson.M{"menu_id": menuId}).Decode(&menu)
 		if err == mongo.ErrNoDocuments {
-			// Do something when no record was found
 			c.JSON(http.StatusNotFound, gin.H{"error": "menu was not found"})
 		} else if err != nil {
 			c.JSON(

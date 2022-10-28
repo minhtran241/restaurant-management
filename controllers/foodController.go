@@ -88,7 +88,6 @@ func GetFood() gin.HandlerFunc {
 		var food models.Food
 		err := foodCollection.FindOne(ctx, bson.M{"food_id": foodId}).Decode(&food)
 		if err == mongo.ErrNoDocuments {
-			// Do something when no record was found
 			c.JSON(http.StatusNotFound, gin.H{"error": "food item was not found"})
 		} else if err != nil {
 			c.JSON(
@@ -121,7 +120,6 @@ func CreateFood() gin.HandlerFunc {
 		err := menuCollection.FindOne(ctx, bson.M{"menu_id": food.Menu_id}).Decode(&menu)
 
 		if err == mongo.ErrNoDocuments {
-			// Do something when no record was found
 			c.JSON(http.StatusNotFound, gin.H{"error": "menu was not found"})
 			return
 		} else if err != nil {
