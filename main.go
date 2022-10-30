@@ -26,8 +26,8 @@ var foodCollection *mongo.Collection = database.OpenCollection(database.Client, 
 // @contact.name Minh Tran
 // @contact.email trqminh24@gmail.com
 
-// @license.name Apache 2.0
-// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+// @license.name MIT
+// @license.url https://www.mit.edu/~amini/LICENSE.md
 
 // @host localhost:8000
 // @BasePath /
