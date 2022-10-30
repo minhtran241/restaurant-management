@@ -170,8 +170,8 @@ info:
     name: Minh Tran
   description: Restaurant Management Service API using Gin framework.
   license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
+    name: MIT
+    url: https://www.mit.edu/~amini/LICENSE.md
   termsOfService: http://swagger.io/terms/
   title: Restaurant Management Service
   version: "1.0"

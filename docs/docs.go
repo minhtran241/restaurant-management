@@ -16,8 +16,8 @@ const docTemplate = `{
             "email": "trqminh24@gmail.com"
         },
         "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+            "name": "MIT",
+            "url": "https://www.mit.edu/~amini/LICENSE.md"
         },
         "version": "{{.Version}}"
     },
