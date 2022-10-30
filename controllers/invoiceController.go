@@ -40,11 +40,13 @@ func GetInvoices() gin.HandlerFunc {
 				http.StatusInternalServerError,
 				gin.H{"error": "error occurred while listing invoices"},
 			)
+			return
 		}
 		var allInvoices []bson.M
 
 		if err = result.All(ctx, &allInvoices); err != nil {
 			log.Fatal(err)
+			return
 		}
 		c.JSON(http.StatusOK, allInvoices)
 	}
@@ -61,15 +63,17 @@ func GetInvoice() gin.HandlerFunc {
 		err := invoiceCollection.FindOne(ctx, bson.M{"invoice_id": invoiceId}).Decode(&invoice)
 		if err == mongo.ErrNoDocuments {
 			c.JSON(http.StatusNotFound, gin.H{"error": "invoice was not found"})
+			return
 		} else if err != nil {
 			c.JSON(
 				http.StatusInternalServerError,
 				gin.H{"error": "error occurred when fetching the invoice"},
 			)
+			return
 		}
 
 		var invoiceView InvoiceViewFormat
-		allOrderItems, err := ItemByOrder(invoice.Order_id)
+		allOrderItems, err := ItemsByOrder(invoice.Order_id)
 		invoiceView.Order_id = invoice.Order_id
 		invoiceView.Payment_due_date = invoice.Payment_due_date
 		invoiceView.Payment_method = "null"

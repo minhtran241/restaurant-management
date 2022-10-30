@@ -29,10 +29,12 @@ func GetMenus() gin.HandlerFunc {
 				http.StatusInternalServerError,
 				gin.H{"error": "error occurred while listing menu items"},
 			)
+			return
 		}
 		var allMenus []bson.M
 		if err = result.All(ctx, &allMenus); err != nil {
 			log.Fatal(err)
+			return
 		}
 		c.JSON(http.StatusOK, allMenus)
 	}
@@ -47,11 +49,13 @@ func GetMenu() gin.HandlerFunc {
 		err := foodCollection.FindOne(ctx, bson.M{"menu_id": menuId}).Decode(&menu)
 		if err == mongo.ErrNoDocuments {
 			c.JSON(http.StatusNotFound, gin.H{"error": "menu was not found"})
+			return
 		} else if err != nil {
 			c.JSON(
 				http.StatusInternalServerError,
 				gin.H{"error": "error occurred when fetching the menu"},
 			)
+			return
 		}
 		c.JSON(http.StatusOK, menu)
 	}

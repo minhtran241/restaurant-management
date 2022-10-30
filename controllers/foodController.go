@@ -69,11 +69,13 @@ func GetFoods() gin.HandlerFunc {
 				http.StatusInternalServerError,
 				gin.H{"error": "error occurred while listing food items"},
 			)
+			return
 		}
 
 		var allFoods []bson.M
 		if err := result.All(ctx, &allFoods); err != nil {
 			log.Fatal(err)
+			return
 		}
 
 		c.JSON(http.StatusOK, allFoods[0])
@@ -89,11 +91,13 @@ func GetFood() gin.HandlerFunc {
 		err := foodCollection.FindOne(ctx, bson.M{"food_id": foodId}).Decode(&food)
 		if err == mongo.ErrNoDocuments {
 			c.JSON(http.StatusNotFound, gin.H{"error": "food item was not found"})
+			return
 		} else if err != nil {
 			c.JSON(
 				http.StatusInternalServerError,
 				gin.H{"error": "error occurred when fetching the food item"},
 			)
+			return
 		}
 		c.JSON(http.StatusOK, food)
 	}

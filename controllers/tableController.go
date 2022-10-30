@@ -29,11 +29,13 @@ func GetTables() gin.HandlerFunc {
 				http.StatusInternalServerError,
 				gin.H{"error": "error occurred while listing tables"},
 			)
+			return
 		}
 		var allTables []bson.M
 
 		if err = result.All(ctx, &allTables); err != nil {
 			log.Fatal(err)
+			return
 		}
 		c.JSON(http.StatusOK, allTables)
 	}
@@ -48,11 +50,13 @@ func GetTable() gin.HandlerFunc {
 		err := tableCollection.FindOne(ctx, bson.M{"table_id": tableId}).Decode(&table)
 		if err == mongo.ErrNoDocuments {
 			c.JSON(http.StatusNotFound, gin.H{"error": "table was not found"})
+			return
 		} else if err != nil {
 			c.JSON(
 				http.StatusInternalServerError,
 				gin.H{"error": "error occurred when fetching the table"},
 			)
+			return
 		}
 		c.JSON(http.StatusOK, table)
 	}

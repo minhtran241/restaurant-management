@@ -29,11 +29,13 @@ func GetOrders() gin.HandlerFunc {
 				http.StatusInternalServerError,
 				gin.H{"error": "error occurred while listing orders"},
 			)
+			return
 		}
 		var allOrders []bson.M
 
 		if err = result.All(ctx, &allOrders); err != nil {
 			log.Fatal(err)
+			return
 		}
 		c.JSON(http.StatusOK, allOrders)
 	}
@@ -53,6 +55,7 @@ func GetOrder() gin.HandlerFunc {
 				http.StatusInternalServerError,
 				gin.H{"error": "error occurred when fetching the order"},
 			)
+			return
 		}
 		c.JSON(http.StatusOK, order)
 	}
