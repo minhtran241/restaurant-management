@@ -1,0 +1,581 @@
+basePath: /
+definitions:
+  models.Food:
+    properties:
+      created_at:
+        type: string
+      food_id:
+        type: string
+      food_image:
+        type: string
+      id:
+        type: string
+      menu_id:
+        type: string
+      name:
+        maxLength: 100
+        minLength: 2
+        type: string
+      price:
+        type: number
+      updated_at:
+        type: string
+    required:
+    - food_image
+    - menu_id
+    - name
+    type: object
+  models.Invoice:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      invoice_id:
+        type: string
+      order_id:
+        type: string
+      payment_due_date:
+        type: string
+      payment_method:
+        type: string
+      payment_status:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - payment_status
+    type: object
+  models.Menu:
+    properties:
+      category:
+        type: string
+      created_at:
+        type: string
+      end_date:
+        type: string
+      food_id:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      start_date:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.Order:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      order_date:
+        type: string
+      order_id:
+        type: string
+      table_id:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - order_date
+    - table_id
+    type: object
+  models.OrderItem:
+    properties:
+      created_at:
+        type: string
+      food_id:
+        type: string
+      id:
+        type: string
+      order_id:
+        type: string
+      order_item_id:
+        type: string
+      quantity:
+        type: string
+      unit_price:
+        type: number
+      updated_at:
+        type: string
+    required:
+    - food_id
+    - order_id
+    - quantity
+    - unit_price
+    type: object
+  models.Table:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      number_of_guests:
+        type: integer
+      table_id:
+        type: string
+      table_number:
+        type: integer
+      updated_at:
+        type: string
+    required:
+    - number_of_guests
+    - table_number
+    type: object
+  models.User:
+    properties:
+      Password:
+        minLength: 6
+        type: string
+      avatar:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        maxLength: 100
+        minLength: 2
+        type: string
+      id:
+        type: string
+      last_name:
+        maxLength: 100
+        minLength: 2
+        type: string
+      phone:
+        type: string
+      refresh_token:
+        type: string
+      token:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    required:
+    - Password
+    - email
+    - first_name
+    - last_name
+    - phone
+    type: object
+host: localhost:8000
+info:
+  contact:
+    email: trqminh24@gmail.com
+    name: Minh Tran
+  description: Restaurant Management Service API using Gin framework.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Restaurant Management Service
+  version: "1.0"
+paths:
+  /:
+    get:
+      consumes:
+      - '*/*'
+      description: get the status of server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Show the status of server.
+      tags:
+      - root
+  /foods:
+    get:
+      description: Responds with the list of all foods as JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Food'
+            type: array
+      summary: Get all foods
+      tags:
+      - foods
+    post:
+      description: Takes a food JSON and store in DB. Return saved JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Food'
+      summary: Store a new food
+      tags:
+      - foods
+  /foods/{food_id}:
+    get:
+      description: Responds with the food with provided ID as JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Food'
+      summary: Get single food by ID
+      tags:
+      - foods
+    patch:
+      description: Takes a food JSON and update food stored in DB. Return saved JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Food'
+      summary: Update a food
+      tags:
+      - foods
+  /invoices:
+    get:
+      description: Responds with the list of all invoices as JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Invoice'
+            type: array
+      summary: Get all invoices
+      tags:
+      - invoices
+    post:
+      description: Takes a invoice JSON and store in DB. Return saved JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Invoice'
+      summary: Store invoice by ID
+      tags:
+      - invoices
+  /invoices/{invoice_id}:
+    get:
+      description: Responds with the invoice with provided ID as JSON
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Invoice'
+      summary: Get single invoice by ID
+      tags:
+      - invoices
+    patch:
+      description: Takes an invoice JSON and update invoice stored in DB. Return saved
+        JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Invoice'
+      summary: Update an invoice
+      tags:
+      - invoices
+  /menus:
+    get:
+      description: Responds with the list of all menus as JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Menu'
+            type: array
+      summary: Get all menus
+      tags:
+      - menus
+    post:
+      description: Takes a menu JSON and store in DB. Return saved JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Menu'
+      summary: Store a new menu
+      tags:
+      - menus
+  /menus/{menu_id}:
+    get:
+      description: Responds with the menu with provided ID as JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Menu'
+      summary: Get single menu by ID
+      tags:
+      - menus
+    patch:
+      description: Takes a menu JSON and update menu stored in DB. Return saved JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Menu'
+      summary: Update a menu
+      tags:
+      - menus
+  /orderItems:
+    get:
+      description: Responds with the list of all foods as JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.OrderItem'
+            type: array
+      summary: Get all ordered items
+      tags:
+      - orderItems
+    post:
+      description: Takes a ordered item JSON and store in DB. Return saved JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.OrderItem'
+      summary: Store a new ordered item
+      tags:
+      - orderItems
+  /orderItems-order/{order_id}:
+    get:
+      description: Responds with the ordered items of an order with provided order's
+        ID.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.OrderItem'
+            type: array
+      summary: Get ordered items order's ID
+      tags:
+      - orderItems
+  /orderItems/{order_item_id}:
+    get:
+      description: Responds with the ordered item with provided ID as JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.OrderItem'
+      summary: Get single ordered item by ID
+      tags:
+      - orderItems
+    patch:
+      description: Takes a ordered item JSON and update ordered item stored in DB.
+        Return saved JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.OrderItem'
+      summary: Update a ordered item
+      tags:
+      - orderItems
+  /orders:
+    get:
+      description: Responds with the list of all orders as JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Order'
+            type: array
+      summary: Get all orders
+      tags:
+      - orders
+    post:
+      description: Takes a order JSON and store in DB. Return saved JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+      summary: Store a new order
+      tags:
+      - orders
+  /orders/{order_id}:
+    get:
+      description: Responds with the order with provided ID as JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+      summary: Get single order by ID
+      tags:
+      - orders
+    patch:
+      description: Takes a order JSON and update order stored in DB. Return saved
+        JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+      summary: Update a order
+      tags:
+      - orders
+  /tables:
+    get:
+      description: Responds with the list of all tables as JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Table'
+            type: array
+      summary: Get all tables
+      tags:
+      - tables
+    post:
+      description: Takes a table JSON and store in DB. Return saved JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Table'
+      summary: Store a new table
+      tags:
+      - tables
+  /tables/{table_id}:
+    get:
+      description: Responds with the table with provided ID as JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Table'
+      summary: Get single table by ID
+      tags:
+      - tables
+    patch:
+      description: Takes a table JSON and update table stored in DB. Return saved
+        JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Table'
+      summary: Update a table
+      tags:
+      - tables
+  /users:
+    get:
+      description: Responds with the list of all users as JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+      summary: Get all users
+      tags:
+      - users
+  /users/{user_id}:
+    get:
+      description: Responds with the user with provided ID as JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Get single user by ID
+      tags:
+      - users
+  /users/login:
+    post:
+      description: Log a user in.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Log a user in..
+      tags:
+      - users
+  /users/signup:
+    post:
+      description: Create a new user.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Create a new user.
+      tags:
+      - users
+swagger: "2.0"

@@ -30,6 +30,14 @@ type InvoiceViewFormat struct {
 
 var invoiceCollection *mongo.Collection = database.OpenCollection(database.Client, "invoice")
 
+// GetInvoices responds with the list of all invoices as JSON.
+// GetInvoices             godoc
+//  @Summary      Get all invoices
+//  @Description  Responds with the list of all invoices as JSON.
+//  @Tags         invoices
+//  @Produce      json
+//  @Success      200  {array}  models.Invoice
+//  @Router       /invoices [get]
 func GetInvoices() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -46,12 +54,19 @@ func GetInvoices() gin.HandlerFunc {
 
 		if err = result.All(ctx, &allInvoices); err != nil {
 			log.Fatal(err)
-			return
 		}
 		c.JSON(http.StatusOK, allInvoices)
 	}
 }
 
+// GetInvoices responds with the invoice with provided ID as JSON.
+// GetInvoices             godoc
+//  @Summary      Get single invoice by ID
+//  @Description  Responds with the invoice with provided ID as JSON
+//  @Tags         invoices
+//  @Produce      json
+//  @Success      200  {object}  models.Invoice
+//  @Router       /invoices/{invoice_id} [get]
 func GetInvoice() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -90,6 +105,14 @@ func GetInvoice() gin.HandlerFunc {
 	}
 }
 
+// CreateInvoice takes a invoice JSON and store in DB.
+// CreateInvoice             godoc
+//  @Summary      Store invoice by ID
+//  @Description  Takes a invoice JSON and store in DB. Return saved JSON.
+//  @Tags         invoices
+//  @Produce      json
+//  @Success      200  {object}  models.Invoice
+//  @Router       /invoices [post]
 func CreateInvoice() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -138,6 +161,14 @@ func CreateInvoice() gin.HandlerFunc {
 	}
 }
 
+// UpdateInvoice takes an invoice JSON and update invoice stored in DB.
+// UpdateInvoice             godoc
+//  @Summary      Update an invoice
+//  @Description  Takes an invoice JSON and update invoice stored in DB. Return saved JSON.
+//  @Tags         invoices
+//  @Produce      json
+//  @Success      200  {object}  models.Invoice
+//  @Router       /invoices/{invoice_id} [patch]
 func UpdateInvoice() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -154,18 +185,18 @@ func UpdateInvoice() gin.HandlerFunc {
 
 		if invoice.Payment_method != nil {
 			updateObj = append(
-				updateObj, bson.E{"payment_method", invoice.Payment_method},
+				updateObj, bson.E{Key: "payment_method", Value: invoice.Payment_method},
 			)
 		}
 
 		if invoice.Payment_status != nil {
 			updateObj = append(
-				updateObj, bson.E{"payment_status", invoice.Payment_status},
+				updateObj, bson.E{Key: "payment_status", Value: invoice.Payment_status},
 			)
 		}
 
 		invoice.Updated_at, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
-		updateObj = append(updateObj, bson.E{"updated_at", invoice.Updated_at})
+		updateObj = append(updateObj, bson.E{Key: "updated_at", Value: invoice.Updated_at})
 
 		upsert := true
 		filter := bson.M{"invoice_id": invoiceId}
@@ -183,7 +214,7 @@ func UpdateInvoice() gin.HandlerFunc {
 			ctx,
 			filter,
 			bson.D{
-				{"$set", updateObj},
+				{Key: "$set", Value: updateObj},
 			},
 			&opt,
 		)

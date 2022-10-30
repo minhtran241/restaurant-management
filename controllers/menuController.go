@@ -19,6 +19,14 @@ import (
 
 var menuCollection *mongo.Collection = database.OpenCollection(database.Client, "menu")
 
+// GetMenus responds with the list of all menus as JSON.
+// GetMenus             godoc
+//  @Summary      Get all menus
+//  @Description  Responds with the list of all menus as JSON.
+//  @Tags         menus
+//  @Produce      json
+//  @Success      200  {array}  models.Menu
+//  @Router       /menus [get]
 func GetMenus() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -40,6 +48,14 @@ func GetMenus() gin.HandlerFunc {
 	}
 }
 
+// GetMenu responds with the menu with provided ID as JSON.
+// GetMenu             godoc
+//  @Summary      Get single menu by ID
+//  @Description  Responds with the menu with provided ID as JSON.
+//  @Tags         menus
+//  @Produce      json
+//  @Success      200  {object}  models.Menu
+//  @Router       /menus/{menu_id} [get]
 func GetMenu() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -61,6 +77,14 @@ func GetMenu() gin.HandlerFunc {
 	}
 }
 
+// CreateMenu takes a menu JSON and store in DB.
+// CreateMenu             godoc
+//  @Summary      Store a new menu
+//  @Description  Takes a menu JSON and store in DB. Return saved JSON.
+//  @Tags         menus
+//  @Produce      json
+//  @Success      200  {object}  models.Menu
+//  @Router       /menus [post]
 func CreateMenu() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -91,6 +115,14 @@ func CreateMenu() gin.HandlerFunc {
 	}
 }
 
+// UpdateMenu takes a menu JSON and update menu stored in DB.
+// UpdateMenu             godoc
+//  @Summary      Update a menu
+//  @Description  Takes a menu JSON and update menu stored in DB. Return saved JSON.
+//  @Tags         menus
+//  @Produce      json
+//  @Success      200  {object}  models.Menu
+//  @Router       /menus/{menu_id} [patch]
 func UpdateMenu() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -112,25 +144,25 @@ func UpdateMenu() gin.HandlerFunc {
 				c.JSON(http.StatusBadRequest, gin.H{"error": msg})
 				return
 			}
-			updateObj = append(updateObj, bson.E{"start_date", menu.Start_Date})
-			updateObj = append(updateObj, bson.E{"end_date", menu.End_Date})
+			updateObj = append(updateObj, bson.E{Key: "start_date", Value: menu.Start_Date})
+			updateObj = append(updateObj, bson.E{Key: "end_date", Value: menu.End_Date})
 
 			if menu.Name != "" {
-				updateObj = append(updateObj, bson.E{"name", menu.Name})
+				updateObj = append(updateObj, bson.E{Key: "name", Value: menu.Name})
 			}
 			if menu.Category != "" {
-				updateObj = append(updateObj, bson.E{"category", menu.Category})
+				updateObj = append(updateObj, bson.E{Key: "category", Value: menu.Category})
 			}
 
 			menu.Updated_at, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
-			updateObj = append(updateObj, bson.E{"updated_at", menu.Updated_at})
+			updateObj = append(updateObj, bson.E{Key: "updated_at", Value: menu.Updated_at})
 
 			upsert := true
 			opt := options.UpdateOptions{
 				Upsert: &upsert,
 			}
 
-			result, err := menuCollection.UpdateOne(ctx, filter, bson.D{{"$set", updateObj}}, &opt)
+			result, err := menuCollection.UpdateOne(ctx, filter, bson.D{{Key: "$set", Value: updateObj}}, &opt)
 
 			if err != nil {
 				msg := "Failed to update the menu"

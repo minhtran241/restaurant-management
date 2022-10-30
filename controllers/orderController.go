@@ -19,6 +19,14 @@ import (
 
 var orderCollection *mongo.Collection = database.OpenCollection(database.Client, "order")
 
+// GetOrders responds with the list of all orders as JSON.
+// GetOrders             godoc
+//  @Summary      Get all orders
+//  @Description  Responds with the list of all orders as JSON.
+//  @Tags         orders
+//  @Produce      json
+//  @Success      200  {array}  models.Order
+//  @Router       /orders [get]
 func GetOrders() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -35,12 +43,19 @@ func GetOrders() gin.HandlerFunc {
 
 		if err = result.All(ctx, &allOrders); err != nil {
 			log.Fatal(err)
-			return
 		}
 		c.JSON(http.StatusOK, allOrders)
 	}
 }
 
+// GetOrder responds with the order with provided ID as JSON.
+// GetOrder             godoc
+//  @Summary      Get single order by ID
+//  @Description  Responds with the order with provided ID as JSON.
+//  @Tags         orders
+//  @Produce      json
+//  @Success      200  {object}  models.Order
+//  @Router       /orders/{order_id} [get]
 func GetOrder() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -61,6 +76,14 @@ func GetOrder() gin.HandlerFunc {
 	}
 }
 
+// CreateOrder takes a order JSON and store in DB.
+// CreateOrder             godoc
+//  @Summary      Store a new order
+//  @Description  Takes a order JSON and store in DB. Return saved JSON.
+//  @Tags         orders
+//  @Produce      json
+//  @Success      200  {object}  models.Order
+//  @Router       /orders [post]
 func CreateOrder() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -105,6 +128,14 @@ func CreateOrder() gin.HandlerFunc {
 	}
 }
 
+// UpdateOrder takes a order JSON and update order stored in DB.
+// UpdateOrder             godoc
+//  @Summary      Update a order
+//  @Description  Takes a order JSON and update order stored in DB. Return saved JSON.
+//  @Tags         orders
+//  @Produce      json
+//  @Success      200  {object}  models.Order
+//  @Router       /orders/{order_id} [patch]
 func UpdateOrder() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -128,11 +159,11 @@ func UpdateOrder() gin.HandlerFunc {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": msg})
 				return
 			}
-			updateObj = append(updateObj, bson.E{"table_id", order.Table_id})
+			updateObj = append(updateObj, bson.E{Key: "table_id", Value: order.Table_id})
 		}
 
 		order.Updated_at, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
-		updateObj = append(updateObj, bson.E{"updated_at", order.Updated_at})
+		updateObj = append(updateObj, bson.E{Key: "updated_at", Value: order.Updated_at})
 
 		upsert := true
 		filter := bson.M{"order_id": orderId}
@@ -144,7 +175,7 @@ func UpdateOrder() gin.HandlerFunc {
 		result, err := orderCollection.UpdateOne(
 			ctx,
 			filter,
-			bson.D{{"$set", updateObj}},
+			bson.D{{Key: "$set", Value: updateObj}},
 			&opt,
 		)
 

@@ -19,6 +19,14 @@ import (
 
 var tableCollection *mongo.Collection = database.OpenCollection(database.Client, "table")
 
+// GetTables responds with the list of all tables as JSON.
+// GetTables             godoc
+//  @Summary      Get all tables
+//  @Description  Responds with the list of all tables as JSON.
+//  @Tags         tables
+//  @Produce      json
+//  @Success      200  {array}  models.Table
+//  @Router       /tables [get]
 func GetTables() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -35,12 +43,19 @@ func GetTables() gin.HandlerFunc {
 
 		if err = result.All(ctx, &allTables); err != nil {
 			log.Fatal(err)
-			return
 		}
 		c.JSON(http.StatusOK, allTables)
 	}
 }
 
+// GetTable responds with the table with provided ID as JSON.
+// GetTable             godoc
+//  @Summary      Get single table by ID
+//  @Description  Responds with the table with provided ID as JSON.
+//  @Tags         tables
+//  @Produce      json
+//  @Success      200  {object}  models.Table
+//  @Router       /tables/{table_id} [get]
 func GetTable() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -62,6 +77,14 @@ func GetTable() gin.HandlerFunc {
 	}
 }
 
+// CreateTable takes a food JSON and store in DB.
+// CreateTable             godoc
+//  @Summary      Store a new table
+//  @Description  Takes a table JSON and store in DB. Return saved JSON.
+//  @Tags         tables
+//  @Produce      json
+//  @Success      200  {object}  models.Table
+//  @Router       /tables [post]
 func CreateTable() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -94,6 +117,14 @@ func CreateTable() gin.HandlerFunc {
 	}
 }
 
+// UpdateTable takes a table JSON and update table stored in DB.
+// UpdateTable             godoc
+//  @Summary      Update a table
+//  @Description  Takes a table JSON and update table stored in DB. Return saved JSON.
+//  @Tags         tables
+//  @Produce      json
+//  @Success      200  {object}  models.Table
+//  @Router       /tables/{table_id} [patch]
 func UpdateTable() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -110,15 +141,15 @@ func UpdateTable() gin.HandlerFunc {
 		var updateObj primitive.D
 
 		if table.Number_of_guests != nil {
-			updateObj = append(updateObj, bson.E{"number_of_guests", table.Number_of_guests})
+			updateObj = append(updateObj, bson.E{Key: "number_of_guests", Value: table.Number_of_guests})
 		}
 
 		if table.Table_number != nil {
-			updateObj = append(updateObj, bson.E{"table_number", table.Table_number})
+			updateObj = append(updateObj, bson.E{Key: "table_number", Value: table.Table_number})
 		}
 
 		table.Updated_at, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
-		updateObj = append(updateObj, bson.E{"updated_at", table.Updated_at})
+		updateObj = append(updateObj, bson.E{Key: "updated_at", Value: table.Updated_at})
 
 		upsert := true
 		filter := bson.M{"table_id": tableId}
@@ -130,7 +161,7 @@ func UpdateTable() gin.HandlerFunc {
 		result, err := tableCollection.UpdateOne(
 			ctx,
 			filter,
-			bson.D{{"$set", updateObj}},
+			bson.D{{Key: "$set", Value: updateObj}},
 			&opt,
 		)
 
