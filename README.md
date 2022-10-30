@@ -1,7 +1,3 @@
-<h1 align="center">
-<img src="https://cdn3.iconfinder.com/data/icons/font-awesome-brands/640/golang-256.png">
-</h1>
-
 # Restaurant Management API
 
 ## Endpoint Table
