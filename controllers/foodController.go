@@ -195,7 +195,6 @@ func UpdateFood() gin.HandlerFunc {
 				return
 			}
 			updateObj = append(updateObj, bson.E{"menu_id", food.Menu_id})
-
 		}
 
 		food.Updated_at, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
