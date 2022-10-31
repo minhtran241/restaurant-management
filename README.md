@@ -16,16 +16,19 @@ $ cd restaurant-management
 
 <div align="center">
 
-| Method                             | User                             | Food            | Menu            | Invoice               | Order             | Ordered Item              | Table             |
-| ---------------------------------- | -------------------------------- | --------------- | --------------- | --------------------- | ----------------- | ------------------------- | ----------------- |
-| Health Check                       | /                                |
-| Swagger                            | /swagger/index.html              |
-| GET (all)                          | /users                           | /foods          | /menus          | /invoices             | /orders           | /orderItems               | /tables           |
-| GET (single)                       | /users/:user_id                  | /foods/:food_id | /menus/menu_id  | /invoices/:invoice_id | /orders/:order_id | /orderItems/order_item_id | /tables/:table_id |
-| POST                               | /users/signup                    | /foods          | /menus          | /invoices             | /orders           | /orderItems               | /tables           |
-| POST                               | /users/login                     |                 |                 |                       |                   |                           |                   |
-| PATCH                              | /users/:user_id                  | /foods/:food_id | /menus/:menu_id | /invoices/:invoice_id | /orders/:order_id | /orderItems/order_item_id | /tables/:table_id |
-| Get all ordered items in one order | /orderItems-order/:order_item_id |
+|            Endpoints             |            Descriptions            | Methods |
+| :------------------------------: | :--------------------------------: | :-----: |
+|                /                 |     Show the status of server      |   GET   |
+|       /swagger/index.html        |             Swagger UI             |   GET   |
+| /orderItems-order/:order_item_id | Get all ordered items in one order |   GET   |
+
+| Method       | User            | Food            | Menu            | Invoice               | Order             | Ordered Item              | Table             |
+| ------------ | --------------- | --------------- | --------------- | --------------------- | ----------------- | ------------------------- | ----------------- |
+| GET (all)    | /users          | /foods          | /menus          | /invoices             | /orders           | /orderItems               | /tables           |
+| GET (single) | /users/:user_id | /foods/:food_id | /menus/menu_id  | /invoices/:invoice_id | /orders/:order_id | /orderItems/order_item_id | /tables/:table_id |
+| POST         | /users/signup   | /foods          | /menus          | /invoices             | /orders           | /orderItems               | /tables           |
+| POST         | /users/login    |                 |                 |                       |                   |                           |                   |
+| PATCH        | /users/:user_id | /foods/:food_id | /menus/:menu_id | /invoices/:invoice_id | /orders/:order_id | /orderItems/order_item_id | /tables/:table_id |
 
 <!-- |            Endpoints             |            Descriptions            | Methods |
 | :------------------------------: | :--------------------------------: | :-----: |
