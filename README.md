@@ -47,7 +47,7 @@ List packages used in this system by using [`glice`](https://github.com/ribice/g
 
 ## License
 
-The project is licensed under the MIT license. Check the [LICENSE](LICENSE) file for details.
+The project is licensed under the MIT license. Check the [LICENSE](LICENSE) file for details
 
 ## Contributor
 
