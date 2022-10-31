@@ -16,7 +16,18 @@ $ cd restaurant-management
 
 <div align="center">
 
-|            Endpoints             |            Descriptions            | Methods |
+| Method                             | User                             | Food            | Menu            | Invoice               | Order             | Ordered Item              | Table             |
+| ---------------------------------- | -------------------------------- | --------------- | --------------- | --------------------- | ----------------- | ------------------------- | ----------------- |
+| Health Check                       | /                                |
+| Swagger                            | /swagger/index.html              |
+| GET (all)                          | /users                           | /foods          | /menus          | /invoices             | /orders           | /orderItems               | /tables           |
+| GET (single)                       | /users/:user_id                  | /foods/:food_id | /menus/menu_id  | /invoices/:invoice_id | /orders/:order_id | /orderItems/order_item_id | /tables/:table_id |
+| POST                               | /users/signup                    | /foods          | /menus          | /invoices             | /orders           | /orderItems               | /tables           |
+| POST                               | /users/login                     |                 |                 |                       |                   |                           |                   |
+| PATCH                              | /users/:user_id                  | /foods/:food_id | /menus/:menu_id | /invoices/:invoice_id | /orders/:order_id | /orderItems/order_item_id | /tables/:table_id |
+| Get all ordered items in one order | /orderItems-order/:order_item_id |
+
+<!-- |            Endpoints             |            Descriptions            | Methods |
 | :------------------------------: | :--------------------------------: | :-----: |
 |                /                 |     Show the status of server      |   GET   |
 |       /swagger/index.html        |             Swagger UI             |   GET   |
@@ -49,6 +60,6 @@ $ cd restaurant-management
 |             /tables              |           Get all tables           |   GET   |
 |        /tables/:table_id         |          Get single table          |   GET   |
 |             /tables              |            Create table            |  POST   |
-|        /tables/:table_id         |            Update table            |  PATCH  |
+|        /tables/:table_id         |            Update table            |  PATCH  | -->
 
 </div>
