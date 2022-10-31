@@ -30,6 +30,14 @@ $ cd restaurant-management
 |     POST     |  /users/login   |                 |                 |                       |                   |                           |                   |
 |    PATCH     | /users/:user_id | /foods/:food_id | /menus/:menu_id | /invoices/:invoice_id | /orders/:order_id | /orderItems/order_item_id | /tables/:table_id |
 
+## LICENSE
+
+MIT
+
+## Contributor
+
+Minh Tran (Me)
+
 <!-- |            Endpoints             |            Descriptions            | Methods |
 | :------------------------------: | :--------------------------------: | :-----: |
 |                /                 |     Show the status of server      |   GET   |
