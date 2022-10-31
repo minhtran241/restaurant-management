@@ -8,7 +8,7 @@ This repository contains the restaurant management service API
 
 ## Package index
 
-List packages used in this system by using [`glice`](https://github.com/ribice/glice), a Golang license and dependency checker. Prints list of all dependencies, their URL, license and saves all the license files in /licenses.
+List packages used in this system by using [github.com/ribice/glice](https://github.com/ribice/glice), a Golang license and dependency checker. Prints list of all dependencies, their URL, license and saves all the license files in /licenses.
 
 ```
 +----------------------------------------+--------------------------------------------+------------+
